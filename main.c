@@ -10,38 +10,86 @@ typedef enum{
 typedef struct no{
     int chave;
     Cor cor;
+    struct no* pai;
     struct no* direita;
     struct no* esquerda;
 }Arvore;
 
 //Declarações
 Arvore* criarRaiz();
+Arvore* inserirNo(int ch,Arvore* raiz);
 
 int main()
 {
     Arvore* raiz = criarRaiz();
+    raiz = inserirNo(50,raiz);
+    raiz = inserirNo(40,raiz);
+    raiz = inserirNo(30,raiz);
+
+    Arvore *aux = raiz;
+    int x;
+    while(aux != NULL){
+        x = aux->chave;
+        printf("%d\n",x);
+        aux = aux->esquerda;
+    }
     return 0;
 }
 
 Arvore* criarRaiz(){
-    Arvore* r = (Arvore *)malloc(sizeof(Arvore));
-    if(r == NULL) printf("Erro ao alocar memoria");
-    r->direita = NULL;
-    r->esquerda = NULL;
-    r->cor = vermelho;
-    return r;
+    return NULL;
 }
 
-Arvore* inserirNo(int ch,Arvore raiz){
+Arvore* inserirNo(int ch,Arvore* raiz){
     Arvore* no = raiz;
-    while(no != null){
-            if(ch < no.chave) no = no->esquerda;
-            if(ch > no.chave) no = no->direita;
-    }
-    if(ch == no.chave){
-        printf("Chave Duplicada");
+    Arvore* pai = NULL;
+    Arvore* avo = NULL;
+    Arvore* tio = NULL;
+
+    Arvore* novo = (Arvore *)malloc(sizeof(Arvore));
+    novo->direita = NULL;
+    novo->esquerda = NULL;
+    novo->pai = NULL;
+    novo->cor = vermelho;
+    novo->chave = ch;
+
+    if(no == NULL){
+        novo->cor = preto;
+        raiz = novo;
     }else{
-        if(ch < no.chave) no = no->esquerda;
-            if(ch > no.chave) no = no->direita;
+        while(no != NULL){
+            novo->pai = no;
+            if(ch < no->chave){
+                no = no->esquerda;
+            }else if(ch > no->chave){
+                no = no->direita;
+            }
+        }
+
+        pai = novo->pai;
+        avo = pai->pai;
+        if(avo->esquerda == pai){
+            tio = avo->direita;
+        }else{
+            tio = avo->esquerda;
+        }
+
+        if(pai->cor == vermelho){//pai de z é vermelho
+            if(tio->cor == vermelho){//caso 1
+
+            }else if(tio->preto){//caso 2
+
+
+            }
+        }else{
+            if(ch<no->chave){
+                pai->esquerda = novo;
+            }else if(ch>no->chave){
+                pai->direita = novo;
+            }
+        }
+
     }
+
+    return raiz;
 }
